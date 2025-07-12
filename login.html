@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AXIOM LOGIN</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <style>
+    html, body {
+      background: #000;
+      color: #39ff14;
+      font-family: 'JetBrains Mono', monospace;
+      height: 100vh;
+      margin: 0;
+      padding: 0;
+    }
+    .login-container {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .login-box {
+      background: rgba(10,20,10,0.88);
+      border: 2px solid #39ff14;
+      border-radius: 12px;
+      padding: 2rem 2.5rem 1.5rem 2.5rem;
+      box-shadow: 0 0 32px #00ff9911;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      max-width: 380px;
+    }
+    .login-title {
+      font-size: 1.35rem;
+      font-weight: bold;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      letter-spacing: 0.08em;
+      color: #33ff77;
+      text-shadow: 0 0 8px #00ff8866;
+    }
+    label {
+      margin-bottom: 0.3rem;
+      margin-top: 1rem;
+      font-size: 1rem;
+      letter-spacing: 0.04em;
+    }
+    input {
+      font-family: 'JetBrains Mono', monospace;
+      background: #000;
+      border: 1.5px solid #39ff14;
+      border-radius: 6px;
+      color: #39ff14;
+      font-size: 1rem;
+      padding: 0.65rem 0.85rem;
+      margin-bottom: 0.25rem;
+      outline: none;
+      transition: border 0.2s;
+    }
+    input:focus {
+      border-color: #00ffbb;
+      background: #071a11;
+    }
+    .login-btn {
+      margin-top: 1.2rem;
+      padding: 0.65rem 0;
+      background: #39ff14;
+      color: #000;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      font-size: 1.07rem;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      transition: background 0.18s, color 0.18s;
+    }
+    .login-btn:hover {
+      background: #00c977;
+      color: #fff;
+    }
+    .error-msg {
+      color: #ff4545;
+      font-size: 0.98rem;
+      margin-top: 1rem;
+      text-align: center;
+      min-height: 1.2em;
+      letter-spacing: 0.03em;
+    }
+    @media (max-width: 600px) {
+      .login-box {
+        padding: 1rem 0.6rem 1rem 0.6rem;
+        max-width: 96vw;
+      }
+      .login-title {
+        font-size: 1.06rem;
+      }
+      input, .login-btn {
+        font-size: 0.98rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <form class="login-box" id="loginForm" autocomplete="off">
+      <div class="login-title">AXIOM SYSTEM // ACCESS REQUIRED</div>
+      <label for="login">LOGIN</label>
+      <input type="text" id="login" name="login" autocomplete="off" autofocus required>
+      <label for="password">PASSWORD</label>
+      <input type="password" id="password" name="password" autocomplete="off" required>
+      <button type="submit" class="login-btn">ENTER</button>
+      <div class="error-msg" id="errorMsg"></div>
+    </form>
+  </div>
+  <script>
+    // Задай свои значения здесь:
+    const VALID_LOGIN = "CREATOR";
+    const VALID_PASSWORD = "Ω-CODE-2025";
+    // Можно подставить любые значения
+
+    const loginForm = document.getElementById('loginForm');
+    const errorMsg = document.getElementById('errorMsg');
+
+    loginForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const login = loginForm.login.value.trim();
+      const password = loginForm.password.value.trim();
+
+      if (login === VALID_LOGIN && password === VALID_PASSWORD) {
+        window.location.href = "main.html"; // Сюда вставь свой следующий путь!
+      } else {
+        errorMsg.textContent = "ACCESS DENIED: Invalid credentials.";
+        loginForm.password.value = "";
+        loginForm.password.focus();
+      }
+    });
+  </script>
+</body>
+</html>

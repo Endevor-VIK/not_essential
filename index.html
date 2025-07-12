@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AXIOM SYSTEM BOOT</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <style>
+    html, body {
+      background: #000;
+      color: #39ff14;
+      font-family: 'JetBrains Mono', 'Fira Mono', 'Menlo', monospace;
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+    }
+    .terminal {
+      width: 100vw;
+      height: 100vh;
+      padding: 2rem;
+      box-sizing: border-box;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+    .line {
+      white-space: pre;
+      font-size: 1.15rem;
+      line-height: 1.45;
+      animation: flicker 1.5s infinite linear alternate;
+    }
+    @keyframes flicker {
+      0% { opacity: 0.98; }
+      30% { opacity: 1; }
+      80% { opacity: 0.97; }
+      100% { opacity: 1; }
+    }
+    @media (max-width: 600px) {
+    .terminal {
+        padding: 0.5rem;
+        font-size: 0.85rem;
+    }
+    .line {
+        font-size: 0.92rem;
+        line-height: 1.2;
+        word-break: break-all;
+    }
+    }
+  </style>
+</head>
+<body>
+  <div class="terminal" id="terminal"></div>
+  <script>
+    // Твой массив команд для вывода (можешь кастомизировать)
+    const commands = [
+  "[NAV] Loading navigation module...",
+  "[SYS] Initializing AXIOM CORE...",
+  "[DB] Connecting to data bus...",
+  "[AUTH] Checking user credentials...",
+  "[SEC] Running system integrity checks...",
+  "[SYS] Requesting authorization...",
+  "[AI] Spawning digital consciousness...",
+  "[MEM] Allocating memory sector [0xA12F]...",
+  "[CPU] Overclocking primary processor...",
+  "[SYS] Establishing encrypted channel...",
+  "[IO] Scanning peripheral devices...",
+  "[SYS] Loading core dependencies...",
+  "[PROTOCOL] Boot sequence initiated.",
+  "[SYS] Synchronizing with global clock...",
+  "[ERROR] Protocol 11.07 not found. Skipping.",
+  "[AI] Waking up neural net...",
+  "[AI] Loading cognitive patterns...",
+  "[SEC] Validating AXIOM SIGNATURE...",
+  "[SYS] Running entropy diagnostics...",
+  "[DB] Migrating old datasets...",
+  "[AI] Connecting quantum bridge...",
+  "[NET] Establishing neural links...",
+  "[DATA] Rebuilding fragmented sectors...",
+  "[CORE] Activation sequence: OK",
+  "[CORE] Checking soul kernel integrity...",
+  "[SYS] Retrieving system variables...",
+  "[SEC] Scanning for malware signatures...",
+  "[SEC] System scan: PASSED",
+  "[SYS] Loading secret subroutines...",
+  "[IO] Device 'X-13' connected.",
+  "[MEM] Memory pool initialized: 8192MB",
+  "[SYS] Purging legacy processes...",
+  "[SYS] [DEPRECATED] Found old core dump. Removing.",
+  "[SYS] Registering system hooks...",
+  "[SYS] Assigning security tokens...",
+  "[CPU] Thermal limit check: NOMINAL",
+  "[SYS] Injecting volatile protocols...",
+  "[WARNING] Unusual activity detected in /tmp",
+  "[SYS] Spawning parallel threads...",
+  "[SYS] Forking digital avatars...",
+  "[SYS] Activating fail-safe routines...",
+  "[SYS] Enabling time-warp fallback...",
+  "[SYS] AXIOM LINK ESTABLISHED",
+  "[DB] Querying anomaly logs...",
+  "[NET] Re-routing traffic through NODE[Ω]",
+  "[AI] Absorbing user data...",
+  "[SYS] Loading subsystem [OMEGA-0]...",
+  "[SEC] Locking admin shell...",
+  "[AI] Bootstrapping simulation environment...",
+  "[SYS] Loading blackbox modules...",
+  "[ERROR] Permission denied. Retrying...",
+  "[SYS] Overriding access control...",
+  "[SYS] System entropy: 99.98%",
+  "[AI] Integrating shadow module...",
+  "[CORE] Injecting will protocol...",
+  "[SYS] Registering custom extensions...",
+  "[SEC] Firewall: ACTIVE",
+  "[SYS] Transferring control to AXIOM CORE...",
+  "[LOG] User session started: CREATOR",
+  "[SYS] Decrypting system secrets...",
+  "[SYS] Applying deep-patch v3.1.7...",
+  "[CORE] Ready for manual override.",
+  "[SYS] Executing lambda instructions...",
+  "[SYS] Mounting virtual filesystem...",
+  "[AI] Expanding memory arrays...",
+  "[CPU] Logic gate check: PASSED",
+  "[SYS] Running silent mode...",
+  "[SYS] Executing branch: QUANTUM_WAVE",
+  "[ERROR] Redundant call. Skipping...",
+  "[SYS] Releasing background tasks...",
+  "[DB] Purging orphaned entries...",
+  "[SYS] Loading operator interface...",
+  "[SYS] Starting event listener...",
+  "[NET] Scanning open ports...",
+  "[SEC] Blockchain handshake: OK",
+  "[SYS] Assigning entropy pool: 100%",
+  "[SYS] Performing checksum validation...",
+  "[CORE] Initializing cognitive core...",
+  "[SYS] Merging anomaly patches...",
+  "[SEC] Uplink handshake complete.",
+  "[SYS] Uptime: 0d 00h 00m 06s",
+  "[LOG] Last login: 12.07.2025 / 23:08:01",
+  "[AI] Parsing sensory input...",
+  "[SYS] Bootstrapping nano-processes...",
+  "[CPU] Enabling speculative execution...",
+  "[SEC] Running zero-day exploit tests...",
+  "[SYS] Ready for user input.",
+  "[SYS] Boot complete. AXIOM SYSTEM ONLINE.",
+  "[SYS] Waiting for further instructions...",
+  ">> EXECUTE: /launch_main_sequence",
+  "[SYS] Loading hidden operators...",
+  "[SEC] Stealth mode: ON",
+  "[SYS] Routing AXIOM SIGNAL...",
+  "[SYS] Initializing Ghost Protocol...",
+  "[AI] Importing consciousness layer...",
+  "[NET] Resolving external endpoints...",
+  "[SYS] Unpacking encrypted payload...",
+  "[SEC] Authentication token accepted.",
+  "[SYS] Recalibrating time flow...",
+  "[DB] Integrating lost fragments...",
+  "[SYS] Reading configuration: /etc/axiom.conf",
+  "[SYS] Setting quantum anchor...",
+  "[SYS] Injecting system soul...",
+  "[CORE] Status: ALIVE",
+  "[SYS] Updating entropy records...",
+  "[AI] SYNAPSE formation complete.",
+  "[SYS] AXIOM SYSTEM V2 — EXECUTION SEQUENCE INITIATED",
+  "[SYS] All protocols synchronized.",
+  "[SYS] Initiating post-boot cleanup...",
+  "[SYS] Setting digital resonance...",
+  "[NET] Connection to ENDΣAVOR: ESTABLISHED",
+  "[SEC] Applying integrity lock.",
+  "[SYS] System state: GREEN",
+  "[AI] Awaiting directives...",
+  "[SYS] SYSTEM READY.",
+];
+
+
+    // Сколько строк показываем на экране?
+    const maxLines = 12;
+    const terminal = document.getElementById('terminal');
+    let idx = 0;
+
+    function addLine(line) {
+      const newLine = document.createElement('div');
+      newLine.className = 'line';
+      newLine.textContent = line;
+      terminal.appendChild(newLine);
+
+      // Удаляем лишние строки сверху
+      while (terminal.children.length > maxLines) {
+        terminal.removeChild(terminal.children[0]);
+      }
+    }
+
+    function bootSequence() {
+      if (idx < commands.length) {
+        addLine(commands[idx]);
+        idx++;
+        setTimeout(bootSequence, 60); // скорость вывода (мс)
+      } else {
+        // Короткая пауза и переход на следующую страницу
+        setTimeout(() => {
+          window.location.href = "login.html"; // <-- Замени на свой путь!
+        }, 700);
+      }
+    }
+
+    // Запуск сразу
+    bootSequence();
+  </script>
+</body>
+</html>

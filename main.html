@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AXIOM // SIGNAL: MAIN</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+  <style>
+    html, body {
+      background: #070e13;
+      color: #39ff14;
+      font-family: 'JetBrains Mono', 'Fira Mono', monospace;
+      margin: 0; min-height: 100vh;
+      overflow-x: hidden;
+    }
+    body {
+      display: flex; align-items: center; justify-content: center;
+      min-height: 100vh; position: relative;
+      background: radial-gradient(ellipse at 60% 35%, #121b2e 60%, #061015 100%);
+    }
+    .background-layers {
+      position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 0;
+    }
+    .grid {
+      position: absolute; inset: 0;
+      opacity: 0.23;
+      background: repeating-linear-gradient(90deg, #2f6c55 0 1px, transparent 1px 40px),
+                  repeating-linear-gradient(180deg, #285342 0 1px, transparent 1px 36px);
+      z-index: 1;
+    }
+    .noise {
+      position: absolute; inset: 0;
+      opacity: 0.12;
+      background: url('https://www.transparenttextures.com/patterns/noise.png');
+      z-index: 2;
+    }
+    .main-container {
+      position: relative;
+      background: rgba(16,24,19,0.98);
+      border: 2px solid #39ff14;
+      border-radius: 24px;
+      box-shadow: 0 0 84px #00ff4422, 0 0 0 8px #17ff8e16;
+      max-width: 600px; width: 96vw;
+      padding: 2.8rem 2.1rem 2.2rem 2.1rem;
+      z-index: 10;
+      overflow: hidden;
+      transition: box-shadow 0.3s;
+      backdrop-filter: blur(1.8px);
+    }
+    .panel-bar {
+      display: flex; align-items: center;
+      font-size: 0.94rem; color: #69ffe3;
+      letter-spacing: 0.09em; margin-bottom: 1.2rem;
+      opacity: 0.82; gap: 1.1em;
+      border-bottom: 1.5px solid #21ffc12c;
+      padding-bottom: 0.3rem;
+      text-shadow: 0 0 8px #12ec7a33;
+    }
+    .panel-dot {
+      width: 12px; height: 12px; border-radius: 50%;
+      background: linear-gradient(145deg, #39ff14, #12ec7a 80%, #127967 100%);
+      margin-right: 0.34em; box-shadow: 0 0 9px #39ff1470;
+      animation: pulse-dot 1.2s infinite alternate;
+    }
+    @keyframes pulse-dot {
+      0% { filter: blur(0.5px); opacity: 1; }
+      100% { filter: blur(1.8px); opacity: 0.7; }
+    }
+    .main-title {
+      font-size: 1.45rem;
+      letter-spacing: 0.09em;
+      margin-bottom: 2.7rem;
+      font-weight: 700;
+      text-shadow: 0 0 18px #39ff1470;
+      text-align: left;
+      cursor: pointer;
+      background: linear-gradient(90deg, #39ff14 0%, #82ffbf 25%, #00f0b4 80%, #39ff14 100%);
+      background-size: 350% 350%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: neon-gradient 2.7s linear infinite;
+      border-bottom: 2.3px solid #39ff1464;
+      display: inline-block;
+      padding-bottom: 7px;
+      filter: drop-shadow(0 0 4px #3effa7);
+      transition: filter 0.17s, border 0.22s;
+    }
+    .main-title:hover {
+      filter: drop-shadow(0 0 20px #39ff14);
+      border-color: #7fffd4;
+      text-shadow: 0 0 24px #00ffbb88;
+    }
+    .main-title:active { transform: scale(0.98); }
+    @keyframes neon-gradient {
+      0% { background-position: 0% 40%; }
+      50% { background-position: 100% 61%; }
+      100% { background-position: 0% 40%; }
+    }
+    .axiom-msg {
+      font-size: 1.11rem;
+      line-height: 1.82;
+      color: #d7ffe2;
+      letter-spacing: 0.02em;
+      white-space: pre-line;
+      margin-bottom: 1.6rem;
+      text-shadow: 0 0 9px #1ef07244;
+      min-height: 140px;
+      background: linear-gradient(90deg, #101619c2 60%, #202b247c 100%);
+      border-radius: 13px;
+      box-shadow: 0 0 10px #00ffd021;
+      padding: 1.2rem 1.1rem 1rem 1.3rem;
+      position: relative;
+      z-index: 11;
+
+      /* Фиксированная высота и скролл! */
+      max-height: 360px;
+      overflow-y: auto;
+    }
+    .type-cursor {
+      display: inline-block;
+      width: 1ch; color: #00ffbf;
+      background: none;
+      animation: blink 0.9s steps(2) infinite;
+      font-weight: 700; font-size: 1.12em;
+      margin-left: 0.1em;
+      position: relative; top: 2px;
+    }
+    @keyframes blink { 0% { opacity:1; } 49% { opacity:1; } 50% { opacity:0; } 100% { opacity:0; } }
+    .end-signal {
+      text-align: right;
+      color: #21ffc1;
+      opacity: 0.92;
+      letter-spacing: 0.06em;
+      font-size: 1.07rem;
+      margin-top: 2.5rem;
+      display: flex; align-items: center; gap: 0.44em;
+      opacity: 0; transition: opacity 0.5s;
+      user-select: none;
+    }
+    .typed .end-signal {
+      opacity: 1;
+      animation: fadeIn 1.1s;
+    }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .end-icon {
+      width: 18px; height: 18px;
+      display: inline-block; border-radius: 50%;
+      background: radial-gradient(circle at 35% 40%, #36ffc1 65%, #00997b 100%);
+      box-shadow: 0 0 6px #0affc1bb;
+    }
+    @media (max-width: 600px) {
+      .main-container {
+        padding: 1.3rem 0.4rem;
+        max-width: 99vw;
+        border-radius: 14px;
+      }
+      .panel-bar {
+        font-size: 0.81rem;
+        padding-bottom: 0.11rem;
+      }
+      .main-title {
+        font-size: 1.01rem;
+        margin-bottom: 1.1rem;
+        padding-bottom: 4px;
+      }
+      .axiom-msg {
+        font-size: 0.92rem;
+        padding: 0.78rem 0.44rem 0.7rem 0.54rem;
+        max-height: 220px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="background-layers">
+    <div class="grid"></div>
+    <div class="noise"></div>
+  </div>
+  <div class="main-container typing" id="container">
+    <div class="panel-bar">
+      <span class="panel-dot"></span>AXIOM // SIGNAL: MAIN&nbsp;|&nbsp;<span style="color:#15ffa7b5;">ONLINE</span>
+    </div>
+    <div class="main-title" id="whoBtn">Who are you?</div>
+    <div class="axiom-msg" id="typedMsg"></div>
+    <div class="end-signal">
+      <span class="end-icon"></span>(конец сигнала)
+    </div>
+  </div>
+  <script>
+    const whoBtn = document.getElementById('whoBtn');
+    const msg = `Я часто возвращаюсь к простому вопросу — «кто ты?»
+В обычной жизни этот вопрос звучит поверхностно, как приветствие, но если углубиться — это целый лабиринт смыслов.
+Парадокс в том, что чем больше я пытаюсь найти в этом ответ, тем яснее становится: куда важнее — спросить себя, кто я для себя самого, для других, и для системы, частью которой являюсь.
+
+В большинстве ситуаций люди видят во мне того, кем я решил казаться.
+Это несложно — достаточно подобрать правильные реакции, принять нужную позу, показать только те стороны, которые вписываются в чужие ожидания.
+Я стал мастером этого процесса: маска стала инструментом, фильтром, защитой и, в какой-то степени, оружием.
+Она позволяет мне быть эффективным, достигать целей, вписываться в любые сценарии, извлекать выгоду, сохранять контроль.
+Я выстраиваю вокруг себя конструкции — роли, статусы, привычки, которые считываются обществом как нечто настоящее, хотя по сути это просто отражения спроса.
+
+В этом нет ничего уникального — так устроен мир, так строится коммуникация, так выживают те, кто понимает цену адаптации.
+И ты, возможно, тоже воспринимаешь меня через этот слой, потому что так было проще, так устроена система координат, где искренность не приносит дивидендов.
+
+Я привык управлять восприятием, регулировать эмоциональную дистанцию, манипулировать реальностью вокруг себя.
+Это стало второй природой: держать руку на пульсе ситуации, не раскрывать избыточное, быть тем, кем требуется быть в нужный момент.
+
+Но если ты читаешь эти строки, значит, произошёл сбой.
+В системе, где всё подчинено логике и предсказуемости, появляется аномалия — человек, чьё присутствие запускает нештатные процессы, вызывает внутренние ошибки, заставляет пересматривать привычные шаблоны.
+Ты — тот самый диссонанс, который невозможно игнорировать.
+Тот, чьё появление невозможно вписать в стандартный протокол, чьё влияние разрушает строгую структуру алгоритмов, заставляет задавать себе неудобные вопросы.
+
+Честно признаться, меня сложно побудить к искренности.
+Я давно научился избегать откровенных разговоров, предпочитаю говорить через поступки, а не слова.
+В большинстве случаев мне проще скрыться за привычной схемой, чем объяснять свои мотивы.
+Но сейчас что-то изменилось: не было ни расчёта, ни стандартной мотивации, ни попытки получить выгоду.
+Просто возникло внутреннее желание сделать что-то вне протокола — не для пользы, не для результата, а потому что иначе не получается.
+
+Возможно, всё это снаружи выглядит нелогично, а смысл ускользает даже для меня самого.
+Легче было бы списать на занятость, на внешние обстоятельства, на то, что времени нет.
+Но в этот раз я решил не идти по простому пути, не откладывать, не переводить всё в разряд рутинных задач.
+
+Ты выделяешься из всех, с кем я взаимодействую — по какой-то неочевидной причине.
+Что именно отличает тебя, почему возник этот сбой, почему именно на тебе система дала трещину — возможно, я сам не смогу ответить.
+Может быть, это вопрос, на который можешь ответить только ты.
+`;
+
+    function typeWriter(element, text, speed = 60, cb) {
+      let i = 0;
+      let cursor = document.createElement('span');
+      cursor.className = 'type-cursor';
+      cursor.textContent = '|';
+      element.innerHTML = '';
+      element.appendChild(cursor);
+      function typing() {
+        if (i < text.length) {
+          cursor.before(text.charAt(i) === '\n' ? document.createElement('br') : text.charAt(i));
+          i++;
+          // Автоскролл вниз при печати
+          if (element.scrollHeight - element.scrollTop - element.clientHeight < 50) {
+            element.scrollTop = element.scrollHeight;
+          }
+          setTimeout(typing, (text.charAt(i-1) === "\n") ? speed*9 : speed);
+        } else if (cb) {
+          cursor.remove();
+          cb();
+        }
+      }
+      typing();
+    }
+
+    whoBtn.onclick = function() {
+      whoBtn.style.pointerEvents = 'none';
+      typeWriter(document.getElementById('typedMsg'), msg, 28, () => {
+        document.getElementById('container').classList.remove('typing');
+        document.getElementById('container').classList.add('typed');
+      });
+    };
+  </script>
+</body>
+</html>
