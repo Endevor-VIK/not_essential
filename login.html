@@ -21,6 +21,9 @@
       justify-content: center;
       min-height: 100vh;
       width: 100vw;
+      padding-left: 2vw;
+      padding-right: 2vw;
+      box-sizing: border-box;
     }
     .login-container {
       width: 100vw;
@@ -41,7 +44,7 @@
       display: flex;
       flex-direction: column;
       width: 100%;
-      max-width: 380px;
+      max-width: 390px;
       min-width: 0;
       box-sizing: border-box;
     }
@@ -91,6 +94,7 @@
       cursor: pointer;
       transition: background 0.18s, color 0.18s;
       width: 100%;
+      box-sizing: border-box;
     }
     .login-btn:hover {
       background: #00c977;
@@ -106,8 +110,8 @@
     }
     @media (max-width: 600px) {
       .login-box {
-        padding: 1rem 0.5rem 1rem 0.5rem;
-        max-width: 98vw;
+        padding: 1rem 0.4rem 1rem 0.4rem;
+        max-width: 95vw;
         border-radius: 9px;
       }
       .login-title {
@@ -122,12 +126,11 @@
         padding: 0.56rem 0.5rem;
       }
     }
-    /* Prevent unwanted horizontal scroll */
-    @media (max-width: 375px) {
+    @media (max-width: 400px) {
       .login-box {
-        max-width: 99vw;
-        padding-left: 0.2rem;
-        padding-right: 0.2rem;
+        max-width: 92vw;
+        padding-left: 0.1rem;
+        padding-right: 0.1rem;
       }
     }
   </style>
@@ -146,8 +149,8 @@
   </div>
   <script>
     // Задай свои значения здесь:
-    const VALID_LOGIN = "luchshiy_casir";
-    const VALID_PASSWORD = "dasha_boss_85";
+    const VALID_LOGIN = "CREATOR";
+    const VALID_PASSWORD = "Ω-CODE-2025";
     // Можно подставить любые значения
 
     const loginForm = document.getElementById('loginForm');
